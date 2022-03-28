@@ -1,5 +1,4 @@
 # aero4wrf
-=============
 
 This  project contains the scripts to generate aerosol datasets from MERRA2 AOD monthly means, to be used as an input data for the WRF simulations.
 
