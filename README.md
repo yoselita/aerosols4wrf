@@ -1,4 +1,4 @@
-# aero4wrf
+# aerosols4wrf
 
 This  project contains the scripts to generate aerosol datasets from MERRA2 AOD monthly means, to be used as an input data for the WRF simulations.
 
@@ -13,7 +13,6 @@ The main script [create_aerosol_input.sh](./create_aersol_input.sh) uses 3 scrip
 2. [read_grid.py](./read_grid.py)  - python script (shared within the CORDEX comunityu) that provides the correct information on the corners for each grid cell.
 3. [set_attributes.ncl](./set_attributes.ncl)  - an NCL script that sets correct metadata and the time variabels in the AOD file, so it can be read by WRF.
 
-Currentlly the output are montly netcdf files AOD[year][month]_[domain], with the global attributes copied from the wrfinput file
-
+Currentlly the output are montly netcdf files AOD[year][month]_[domain] (see an [example](./data/)), with the global attributes copied from the wrfinput file.
 
 Option to create yearly or multi-monthly files to be added... 
