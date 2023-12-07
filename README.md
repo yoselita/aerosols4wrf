@@ -1,11 +1,14 @@
 # aero4wrf
 
-This  repository contains scripts to generate aerosol files that can be used as an input data for the WRF simulations.These files can be generated from MERRA2 AOD monthly means and GCM historical and scenario multiyear files.
+This  repository contains scripts to generate aerosol files that can be used as an input data for the WRF simulations.These files can be generated from MERRA2 AOD monthly means and GCM historical and scenario multiyear files. This version of the script is developed and tested for the NorESM2 GCM runs, but it could be the case that the naming inside of the script will need some adaptation.
+
 The main script to obtain an aerosol input for WRF is [create_aersol4wrf_input.sh](./create_aersol4wrf_input.sh). It is a combination of bash, cdo, nco, and ncl programming languges. To be able to run it, it is necessary to create a conda enviroment with the mentioned packages installed. 
 
-In the the script the user needs to define the model name. Set the model="MERRA" if the MERRA file will be processed. The script converts the MERRA2 AOD aerosol data downloaded from [link](https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=mostrecent&page=1&size=10) (NOTE: the raw data are available at the [NASA Earth Science Data](https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/), with an account needed to access the data), to the format readable by WRF. 
+Within the script the user needs to define the model name:
 
-If a GCM multyear output willl be used for preparing the aerosol input for WRF, then set the model="GCM". Note that path to files and AOD variable name in the file should be adjusted to the user's data (typically the AOD550 variable name is "od550aer")
+1. Set the **model="MERRA"** if a MERRA file will be processed. The script converts the MERRA2 AOD aerosol data downloaded from [link](https://b2share.fz-juelich.de/records/?		community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=mostrecent&page=1&size=10) (NOTE: the raw data are available at the [NASA Earth Science Data](https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/), with an account needed to access the data), to the format readable by WRF. 
+
+2. If a GCM multyear output will be used for preparing the aerosol input for WRF, then set the **model="GCM"**. Note that paths to files and AOD variable name in the file should be adjusted to the user's data (in NorESM2 the AOD550 variable is named "od550aer")
 
 To run the script:
 	                    
