@@ -4,22 +4,33 @@ This  repository contains scripts to generate aerosol files that can be used as 
 
 The main script to obtain an aerosol input for WRF is [create_aersol4wrf_input.sh](./create_aersol4wrf_input.sh). It is a combination of bash, cdo, nco, and ncl programming languges. To be able to run it, it is necessary to create a conda enviroment with the mentioned packages installed. 
 
-Within the script the user needs to define the model name:
+Within the script the user needs to redefine:
 
-1. Set the **model="MERRA"** if a MERRA file will be processed. The script converts the MERRA2 AOD aerosol data downloaded from [link](https://b2share.fz-juelich.de/records/?		community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=mostrecent&page=1&size=10) (NOTE: the raw data are available at the [NASA Earth Science Data](https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/), with an account needed to access the data), to the format readable by WRF. 
+1. The model type (evaluation or GCM run):
 
-2. If a GCM multyear output will be used for preparing the aerosol input for WRF, then set the **model="GCM"**. Note that paths to files and AOD variable name in the file should be adjusted to the user's data (in NorESM2 the AOD550 variable is named "od550aer")
+	<br/>Set the **model="MERRA"** if a MERRA file will be processed. The script converts the MERRA2 AOD aerosol data downloaded from [link](https://b2share.fz-juelich.de/records/?		community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=mostrecent&page=1&size=10) (NOTE: the raw data are available at the [NASA Earth Science Data](https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/), with an account needed to access the data), to the format readable by WRF. 
 
-To run the script:
-	                    
-    ./create_aersol4wrf_input.sh
+	<br/>If a GCM multyear output will be used for preparing the aerosol input for WRF, then set the **model="GCM"**. Note that paths to files and AOD variable name in the file should be adjusted to the user's data (in NorESM2 the AOD550 variable is named "od550aer")
+
+2. Set the start and the end date, 
+
+3. Set the domain (e.g. d01, d02)
 	
 The main script [create_aersol4wrf_input.sh](./create_aersol4wrf_input.sh) uses 2 ncl scripts:
 1. [grid_corners.ncl](./grid_corners.ncl) - the NCL script that converts WRF grid to a SCRIP convention file for an easy interpolation with cdo. 
 2. [set_attributes.ncl](./set_attributes.ncl)  - the NCL script that sets correct metadata and the time variabels in the AOD file, so it can be read by WRF.
 
+To run the script:
+	                    
+    ./create_aersol4wrf_input.sh
+
 The output names of the files are:
-<br/> a) if model = "MERRA":
+	<br/> a) if model = "MERRA":
 	<br/> `AOD_start-date_end-date_domain`
-<br/> b) if model = "GCM":
+	<br/> b) if model = "GCM":
 	<br/> `AOD_scenario_start-date_end-date_domain`
+	
+	
+###NOTE:
+In the running folder geo_em.d0x.nc file should be placed so that the ncl scripts get the necessarty information for the inteprolation and setting the metadata. 
+
