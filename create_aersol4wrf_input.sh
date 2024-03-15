@@ -63,7 +63,7 @@ function delete_atts(){
 #
 #
 # Activate your eviroment with cdo, nco, and ncl packages installed
-source activate jupyter
+# source activate <your conda enviroment>
 
 # Define model ("GCM" or "MERRA" if it is for evaluation run) and domain
 model="MERRA"
@@ -201,9 +201,9 @@ elif [ ${model} == "MERRA" ]; then
 		 	set_start_time out.nc
 
 			# Defining the starting and the ending day, and setting the starting time
-		  timeRange2Interval out.nc AOD_$fname ${start_date/_/T} ${end_date/_/T} 1day
-		  rm out.nc
-			coordinates = "XLONG XLAT XTIME"
+		  	timeRange2Interval out.nc AOD_$fname ${start_date/_/T} ${end_date/_/T} 1day
+		  	rm out.nc
+			coordinates="XLONG XLAT XTIME"
 			
 			# Remapping
 			ncl 'srcFile="geo_em.'${domain}'.nc"' grid_corners.ncl
