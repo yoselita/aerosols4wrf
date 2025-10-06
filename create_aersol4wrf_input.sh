@@ -6,7 +6,7 @@
 # The created files can be used as auxinput15.
 #
 # MERRA download sites: 1) NASA: https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/
-#						2) JUELICH (processed version): https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=-&page=1&size=10
+#			2) JUELICH (processed version): https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=-&page=1&size=10
 #
 # The outputname of the file is:
 # 	if model=="MERRA":
