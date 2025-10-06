@@ -4,6 +4,10 @@
 #
 # This script creates aerosol input files for the WRF run from GCM montlhy mean data aggegated in multoyear files or MERRA monthly mean data.
 # The created files can be used as auxinput15.
+# MERRA download sites: 1) NASA:
+#												https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/
+#												2) JUELICH (processed version):
+#                       https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=-&page=1&size=10
 #
 # The outputname of the file is:
 # 	if model=="MERRA":
@@ -61,30 +65,40 @@ function delete_atts(){
 # Define paths and variables
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #
-#
 # Activate your eviroment with cdo, nco, and ncl packages installed
 # source activate <your conda enviroment>
 
-# Define model ("GCM" or "MERRA" if it is for evaluation run) and domain
-model="MERRA"
-domain="d01" #$1 	
+domain=$1	# Define domain ("d01" or "d02")
+model=$2	# Define model ("GCM" or "MERRA")
+if [[ "${model}" == "MERRA" && -z "$3" ]]; then # If MERRA, define a download site: processed JUELICH or original MERRA
+    echo "Please provide the download site of your raw data are coming as an argument: JUELICH or NASA"
+    echo "Usage: $0 <domain> <model> <download site>"
+    exit 1
+else
+    downsite=$3
+fi
+echo $downsite
 
-if [ ${model} == "MERRA" ]; then
-	aod_varname="AOD"
+if [[ "${model}" == "MERRA" ]]; then
+    if [[ "${downsite}" == "NASA" ]]; then
+        aod_varname="AODANA"
+    else
+        aod_varname="AOD"
+    fi    
 	start_year=2018
 	start_month=01
 	start_day=01
 	end_year=2018
-	end_month=03
-	end_day=01
-	merge="False"  # Set to True if you want to produce multimonthly data, otherwise "False"
+	end_month=01
+	end_day=31
+	merge="True"  # Set to True if you want to produce multimonthly data, otherwise "False"
 	
 	# Creating sequences over years and months
 	years=$(seq $start_year $end_year)
 	months=$(seq -w $start_month $end_month)
 	
 	# Define working directory
-	path2data="../data/"
+	path2data="./data/"
 	wrkdir=`pwd`	
 	output="${wrkdir}/output/"
 	mkdir -p ${output}
@@ -92,11 +106,15 @@ if [ ${model} == "MERRA" ]; then
 elif [ ${model} == "GCM" ]; then		
 	aod_varname="od550aer"
 	scenario="historical" # or "ssp126" "ssp370" "ssp585"
+	
+	# Create working and output directories
 	wrkdir=`pwd`
 	output="${wrkdir}/output/${scenario}"
 	splitdir="${wrkdir}/split"
 	mkdir -p ${splitdir}
 	mkdir -p ${output}	
+	
+	# Define working directory
 	if [ "${scenario}" -eq "historical" ]; then
 		path2data="path/CMIP6/CMIP/institution/GCM/${scenario}/realization/AERmon/od550aer/..."
 	else
@@ -179,7 +197,11 @@ elif [ ${model} == "MERRA" ]; then
 		 	# Extracting AOD from the file
 			echo "Working onf the file: $filename"
 		 	ncatted -h -a coordinates,,d,, ${filename} fint.nc
-		 	cdo -s -selname,AOD fint.nc out.nc ;rm fint.nc
+		 	if [ ${downsite} == "NASA" ]; then
+		 	  ncwa -a time fint.nc tmp.nc; rm fint.nc
+		 	  ncks -x -v time tmp.nc -o fint.nc; rm tmp.nc
+		 	fi
+		 	cdo -s -selname,${aod_varname} fint.nc out.nc ;rm fint.nc
 
 			# Defining the starting and the ending day, and setting the starting time
 			ndays_per_month=`cal $month $year | awk 'NF {DAYS = $NF}; END {print DAYS}'`
