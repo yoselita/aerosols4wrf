@@ -4,10 +4,9 @@
 #
 # This script creates aerosol input files for the WRF run from GCM montlhy mean data aggegated in multoyear files or MERRA monthly mean data.
 # The created files can be used as auxinput15.
-# MERRA download sites: 1) NASA:
-#												https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/
-#												2) JUELICH (processed version):
-#                       https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=-&page=1&size=10
+#
+# MERRA download sites: 1) NASA: https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2IMNXGAS.5.12.4/
+#						2) JUELICH (processed version): https://b2share.fz-juelich.de/records/?community=a140d3f3-0117-4665-9945-4c7fcb9afb51&sort=-&page=1&size=10
 #
 # The outputname of the file is:
 # 	if model=="MERRA":
@@ -77,7 +76,6 @@ if [[ "${model}" == "MERRA" && -z "$3" ]]; then # If MERRA, define a download si
 else
     downsite=$3
 fi
-echo $downsite
 
 if [[ "${model}" == "MERRA" ]]; then
     if [[ "${downsite}" == "NASA" ]]; then
