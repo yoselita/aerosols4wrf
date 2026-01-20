@@ -113,7 +113,7 @@ elif [ ${model} == "GCM" ]; then
 	mkdir -p ${output}	
 	
 	# Define working directory
-	if [ "${scenario}" -eq "historical" ]; then
+	if [ "${scenario}" == "historical" ]; then
 		path2data="path/CMIP6/CMIP/institution/GCM/${scenario}/realization/AERmon/od550aer/..."
 	else
 		path2data="path/CMIP6/ScenarioMIP/institution/GCM/${scenario}/realization/AERmon/od550aer/..."
